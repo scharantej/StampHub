@@ -1,0 +1,17 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Edit a stamp</title>
+</head>
+<body>
+<h1>Edit a stamp</h1>
+<form action="/edit/{{ stamp.id }}" method="post">
+<input type="text" name="stamp" value="{{ stamp.name }}">
+<input type="submit" value="Save">
+</form>
+</body>
+</html>
+
+
