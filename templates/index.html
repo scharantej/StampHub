@@ -12,7 +12,10 @@
 <li>{{ stamp }}</li>
 {% endfor %}
 </ul>
-<a href="/add">Add a new stamp</a>
+<form action="/add" method="post">
+<input type="text" name="stamp" placeholder="Add a new stamp">
+<input type="submit" value="Add">
+</form>
 </body>
 </html>
 
