@@ -12,18 +12,22 @@ def index():
     return render_template('index.html', stamps=stamps)
 
 # Add a new stamp
-@app.route('/add', methods=['POST'])
+@app.route('/add', methods=['GET', 'POST'])
 def add():
-    stamp = request.form.get('stamp')
-    stamps.append(stamp)
-    return redirect(url_for('index'))
+    if request.method == 'POST':
+        stamp = request.form.get('stamp')
+        stamps.append(stamp)
+        return redirect(url_for('index'))
+    return render_template('add.html')
 
 # Edit an existing stamp
-@app.route('/edit/<int:id>', methods=['POST'])
+@app.route('/edit/<int:id>', methods=['GET', 'POST'])
 def edit(id):
-    stamp = request.form.get('stamp')
-    stamps[id] = stamp
-    return redirect(url_for('index'))
+    if request.method == 'POST':
+        stamp = request.form.get('stamp')
+        stamps[id] = stamp
+        return redirect(url_for('index'))
+    return render_template('edit.html', stamp=stamps[id])
 
 # Delete a stamp
 @app.route('/delete/<int:id>')
@@ -37,62 +41,111 @@ def view():
     return render_template('view.html', stamps=stamps)
 
 # Search for stamps
-@app.route('/search', methods=['POST'])
+@app.route('/search', methods=['GET', 'POST'])
 def search():
-    query = request.form.get('query')
-    results = [stamp for stamp in stamps if query in stamp]
-    return render_template('search.html', results=results)
+    if request.method == 'POST':
+        query = request.form.get('query')
+        results = [stamp for stamp in stamps if query in stamp]
+        return render_template('search.html', results=results)
+    return render_template('search.html')
 
 if __name__ == '__main__':
     app.run()
 
 
-main.py file:
+HTML code for index.html
+
+html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Stamp Collection</title>
+</head>
+<body>
+  <h1>Stamp Collection</h1>
+  <ul>
+    {% for stamp in stamps %}
+      <li>{{ stamp }}</li>
+    {% endfor %}
+  </ul>
+  <a href="/add">Add a new stamp</a>
+</body>
+</html>
 
 
-from flask import Flask, render_template, request, redirect, url_for
+HTML code for add.html
 
-app = Flask(__name__)
+html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Add a new stamp</title>
+</head>
+<body>
+  <h1>Add a new stamp</h1>
+  <form action="/add" method="post">
+    <input type="text" name="stamp" placeholder="Stamp name">
+    <input type="submit" value="Add">
+  </form>
+</body>
+</html>
 
-# Create a database to store the stamps
-stamps = []
 
-# Home page
-@app.route('/')
-def index():
-    return render_template('index.html', stamps=stamps)
+HTML code for edit.html
 
-# Add a new stamp
-@app.route('/add', methods=['POST'])
-def add():
-    stamp = request.form.get('stamp')
-    stamps.append(stamp)
-    return redirect(url_for('index'))
+html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Edit a stamp</title>
+</head>
+<body>
+  <h1>Edit a stamp</h1>
+  <form action="/edit/{{ stamp.id }}" method="post">
+    <input type="text" name="stamp" value="{{ stamp.name }}">
+    <input type="submit" value="Save">
+  </form>
+</body>
+</html>
 
-# Edit an existing stamp
-@app.route('/edit/<int:id>', methods=['POST'])
-def edit(id):
-    stamp = request.form.get('stamp')
-    stamps[id] = stamp
-    return redirect(url_for('index'))
 
-# Delete a stamp
-@app.route('/delete/<int:id>')
-def delete(id):
-    del stamps[id]
-    return redirect(url_for('index'))
+HTML code for view.html
 
-# View the stamps
-@app.route('/view')
-def view():
-    return render_template('view.html', stamps=stamps)
+html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>View stamps</title>
+</head>
+<body>
+  <h1>View stamps</h1>
+  <ul>
+    {% for stamp in stamps %}
+      <li>{{ stamp }}</li>
+    {% endfor %}
+  </ul>
+</body>
+</html>
 
-# Search for stamps
-@app.route('/search', methods=['POST'])
-def search():
-    query = request.form.get('query')
-    results = [stamp for stamp in stamps if query in stamp]
-    return render_template('search.html', results=results)
 
-if __name__ == '__main__':
-    app.run()
+HTML code for search.html
+
+html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Search for stamps</title>
+</head>
+<body>
+  <h1>Search for stamps</h1>
+  <form action="/search" method="post">
+    <input type="text" name="query" placeholder="Search for a stamp">
+    <input type="submit" value="Search">
+  </form>
+  <ul>
+    {% for result in results %}
+      <li>{{ result }}</li>
+    {% endfor %}
+  </ul>
+</body>
+</html>
