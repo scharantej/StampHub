@@ -4,132 +4,148 @@ from flask import Flask, render_template, request, redirect, url_for
 app = Flask(__name__)
 
 # Create a database to store the stamps
-stamps = [
-    {
-        "id": 1,
-        "name": "USA 1930 2-cent Washington",
-        "year": 1930,
-        "value": 0.02
-    },
-    {
-        "id": 2,
-        "name": "Canada 1967 5-cent Maple Leaf",
-        "year": 1967,
-        "value": 0.05
-    },
-    {
-        "id": 3,
-        "name": "Great Britain 1840 1-penny Black Penny",
-        "year": 1840,
-        "value": 1.00
-    }
-]
+stamps = []
 
-# Route for the home page
-@app.route("/")
+# Home page
+@app.route('/')
 def index():
-    return render_template("index.html", stamps=stamps)
+    return render_template('index.html', stamps=stamps)
 
-# Route for adding a new stamp
-@app.route("/add_stamp", methods=["GET", "POST"])
-def add_stamp():
-    if request.method == "GET":
-        return render_template("add_stamp.html")
-    else:
-        name = request.form["name"]
-        year = int(request.form["year"])
-        value = float(request.form["value"])
-
-        # Create a new stamp
-        stamp = {
-            "id": len(stamps) + 1,
-            "name": name,
-            "year": year,
-            "value": value
-        }
-
-        # Add the new stamp to the database
+# Add a new stamp
+@app.route('/add', methods=['GET', 'POST'])
+def add():
+    if request.method == 'POST':
+        stamp = request.form.get('stamp')
         stamps.append(stamp)
+        return redirect(url_for('index'))
+    return render_template('add.html')
 
-        # Redirect to the home page
-        return redirect(url_for("index"))
+# Edit an existing stamp
+@app.route('/edit/<int:id>', methods=['GET', 'POST'])
+def edit(id):
+    if request.method == 'POST':
+        stamp = request.form.get('stamp')
+        stamps[id] = stamp
+        return redirect(url_for('index'))
+    return render_template('edit.html', stamp=stamps[id])
 
-# Route for editing an existing stamp
-@app.route("/edit_stamp/<int:stamp_id>", methods=["GET", "POST"])
-def edit_stamp(stamp_id):
-    stamp = next((stamp for stamp in stamps if stamp["id"] == stamp_id), None)
+# Delete a stamp
+@app.route('/delete/<int:id>')
+def delete(id):
+    del stamps[id]
+    return redirect(url_for('index'))
 
-    if request.method == "GET":
-        return render_template("edit_stamp.html", stamp=stamp)
-    else:
-        name = request.form["name"]
-        year = int(request.form["year"])
-        value = float(request.form["value"])
+# View the stamps
+@app.route('/view')
+def view():
+    return render_template('view.html', stamps=stamps)
 
-        # Update the stamp
-        stamp["name"] = name
-        stamp["year"] = year
-        stamp["value"] = value
+# Search for stamps
+@app.route('/search', methods=['GET', 'POST'])
+def search():
+    if request.method == 'POST':
+        query = request.form.get('query')
+        results = [stamp for stamp in stamps if query in stamp]
+        return render_template('search.html', results=results)
+    return render_template('search.html')
 
-        # Redirect to the home page
-        return redirect(url_for("index"))
-
-# Route for deleting a stamp
-@app.route("/delete_stamp/<int:stamp_id>", methods=["GET", "POST"])
-def delete_stamp(stamp_id):
-    stamp = next((stamp for stamp in stamps if stamp["id"] == stamp_id), None)
-
-    if request.method == "GET":
-        return render_template("delete_stamp.html", stamp=stamp)
-    else:
-        # Delete the stamp from the database
-        stamps.remove(stamp)
-
-        # Redirect to the home page
-        return redirect(url_for("index"))
-
-# Route for viewing a single stamp
-@app.route("/view_stamp/<int:stamp_id>")
-def view_stamp(stamp_id):
-    stamp = next((stamp for stamp in stamps if stamp["id"] == stamp_id), None)
-
-    return render_template("view_stamp.html", stamp=stamp)
-
-# Route for searching for stamps
-@app.route("/search_stamps", methods=["GET", "POST"])
-def search_stamps():
-    if request.method == "GET":
-        return render_template("search_stamps.html")
-    else:
-        name = request.form["name"]
-        year = int(request.form["year"])
-        value = float(request.form["value"])
-
-        # Search for stamps that match the criteria
-        results = [stamp for stamp in stamps if (name in stamp["name"] and year == stamp["year"] and value == stamp["value"])]
-
-        return render_template("search_stamps.html", results=results)
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     app.run()
 
 
-The above code is the corrected version of the Flask application to manage a collection of stamps. The following changes were made:
+HTML code for index.html
 
-* The `name` variable was changed to `stamp_name` in the `add_stamp.html` file.
-* The `year` variable was changed to `stamp_year` in the `add_stamp.html` file.
-* The `value` variable was changed to `stamp_value` in the `add_stamp.html` file.
-* The `name` variable was changed to `stamp_name` in the `edit_stamp.html` file.
-* The `year` variable was changed to `stamp_year` in the `edit_stamp.html` file.
-* The `value` variable was changed to `stamp_value` in the `edit_stamp.html` file.
-* The `name` variable was changed to `stamp_name` in the `delete_stamp.html` file.
-* The `year` variable was changed to `stamp_year` in the `delete_stamp.html` file.
-* The `value` variable was changed to `stamp_value` in the `delete_stamp.html` file.
-* The `name` variable was changed to `stamp_name` in the `view_stamp.html` file.
-* The `year` variable was changed to `stamp_year` in the `view_stamp.html` file.
-* The `value` variable was changed to `stamp_value` in the `view_stamp.html` file.
-* The `name` variable was changed to `stamp_name` in the `search_stamps.html` file.
-* The `year` variable was changed to `stamp_year` in the `search_stamps.html` file.
-* The `value` variable was changed to `stamp_value` in the `search_stamps.html` file.
+html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Stamp Collection</title>
+</head>
+<body>
+  <h1>Stamp Collection</h1>
+  <ul>
+    {% for stamp in stamps %}
+      <li>{{ stamp }}</li>
+    {% endfor %}
+  </ul>
+  <a href="/add">Add a new stamp</a>
+</body>
+</html>
 
-These changes ensure that the proper references are made to all the variables in the HTML files.
+
+HTML code for add.html
+
+html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Add a new stamp</title>
+</head>
+<body>
+  <h1>Add a new stamp</h1>
+  <form action="/add" method="post">
+    <input type="text" name="stamp" placeholder="Stamp name">
+    <input type="submit" value="Add">
+  </form>
+</body>
+</html>
+
+
+HTML code for edit.html
+
+html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Edit a stamp</title>
+</head>
+<body>
+  <h1>Edit a stamp</h1>
+  <form action="/edit/{{ stamp.id }}" method="post">
+    <input type="text" name="stamp" value="{{ stamp.name }}">
+    <input type="submit" value="Save">
+  </form>
+</body>
+</html>
+
+
+HTML code for view.html
+
+html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>View stamps</title>
+</head>
+<body>
+  <h1>View stamps</h1>
+  <ul>
+    {% for stamp in stamps %}
+      <li>{{ stamp }}</li>
+    {% endfor %}
+  </ul>
+</body>
+</html>
+
+
+HTML code for search.html
+
+html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Search for stamps</title>
+</head>
+<body>
+  <h1>Search for stamps</h1>
+  <form action="/search" method="post">
+    <input type="text" name="query" placeholder="Search for a stamp">
+    <input type="submit" value="Search">
+  </form>
+  <ul>
+    {% for result in results %}
+      <li>{{ result }}</li>
+    {% endfor %}
+  </ul>
+</body>
+</html>
