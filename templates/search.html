@@ -1,0 +1,21 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Search Stamps</title>
+</head>
+<body>
+<h1>Search Stamps</h1>
+<form action="/search" method="post">
+<input type="text" name="query" placeholder="Search for a stamp">
+<input type="submit" value="Search">
+</form>
+<ul>
+{% for result in results %}
+<li>{{ result }}</li>
+{% endfor %}
+</ul>
+</body>
+</html>
+
