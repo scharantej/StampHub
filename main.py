@@ -59,16 +59,16 @@ html
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Stamp Collection</title>
+    <title>Stamp Collection</title>
 </head>
 <body>
-  <h1>Stamp Collection</h1>
-  <ul>
-    {% for stamp in stamps %}
-      <li>{{ stamp }}</li>
-    {% endfor %}
-  </ul>
-  <a href="/add">Add a new stamp</a>
+    <h1>Stamp Collection</h1>
+    <ul>
+        {% for stamp in stamps %}
+            <li>{{ stamp }}</li>
+        {% endfor %}
+    </ul>
+    <a href="/add">Add a new stamp</a>
 </body>
 </html>
 
@@ -79,14 +79,14 @@ html
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Add a new stamp</title>
+    <title>Add a new stamp</title>
 </head>
 <body>
-  <h1>Add a new stamp</h1>
-  <form action="/add" method="post">
-    <input type="text" name="stamp" placeholder="Stamp name">
-    <input type="submit" value="Add">
-  </form>
+    <h1>Add a new stamp</h1>
+    <form action="/add" method="post">
+        <input type="text" name="stamp" placeholder="Stamp name">
+        <input type="submit" value="Add">
+    </form>
 </body>
 </html>
 
@@ -97,14 +97,14 @@ html
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Edit a stamp</title>
+    <title>Edit a stamp</title>
 </head>
 <body>
-  <h1>Edit a stamp</h1>
-  <form action="/edit/{{ stamp.id }}" method="post">
-    <input type="text" name="stamp" value="{{ stamp.name }}">
-    <input type="submit" value="Save">
-  </form>
+    <h1>Edit a stamp</h1>
+    <form action="/edit/{{ stamp.id }}" method="post">
+        <input type="text" name="stamp" value="{{ stamp.name }}">
+        <input type="submit" value="Save">
+    </form>
 </body>
 </html>
 
@@ -115,15 +115,15 @@ html
 <!DOCTYPE html>
 <html>
 <head>
-  <title>View stamps</title>
+    <title>View stamps</title>
 </head>
 <body>
-  <h1>View stamps</h1>
-  <ul>
-    {% for stamp in stamps %}
-      <li>{{ stamp }}</li>
-    {% endfor %}
-  </ul>
+    <h1>View stamps</h1>
+    <ul>
+        {% for stamp in stamps %}
+            <li>{{ stamp }}</li>
+        {% endfor %}
+    </ul>
 </body>
 </html>
 
@@ -134,18 +134,18 @@ html
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Search for stamps</title>
+    <title>Search for stamps</title>
 </head>
 <body>
-  <h1>Search for stamps</h1>
-  <form action="/search" method="post">
-    <input type="text" name="query" placeholder="Search for a stamp">
-    <input type="submit" value="Search">
-  </form>
-  <ul>
-    {% for result in results %}
-      <li>{{ result }}</li>
-    {% endfor %}
-  </ul>
+    <h1>Search for stamps</h1>
+    <form action="/search" method="post">
+        <input type="text" name="query" placeholder="Search for a stamp">
+        <input type="submit" value="Search">
+    </form>
+    <ul>
+        {% for result in results %}
+            <li>{{ result }}</li>
+        {% endfor %}
+    </ul>
 </body>
 </html>
