@@ -4,145 +4,89 @@ from flask import Flask, render_template, request, redirect, url_for
 app = Flask(__name__)
 
 # Create a database to store the stamps
-stamps = []
+stamps = [
+    {
+        "id": 1,
+        "country": "United States",
+        "year": 1930,
+        "theme": "Presidents"
+    },
+    {
+        "id": 2,
+        "country": "Canada",
+        "year": 1967,
+        "theme": "Centenary of Confederation"
+    },
+    {
+        "id": 3,
+        "country": "Great Britain",
+        "year": 1840,
+        "theme": "Penny Black"
+    }
+]
 
-# Add a new stamp to the collection
-@app.route('/add_stamp', methods=['GET', 'POST'])
+# Define the routes
+@app.route("/")
+def index():
+    return render_template("index.html", stamps=stamps)
+
+@app.route("/add_stamp", methods=["GET", "POST"])
 def add_stamp():
-    if request.method == 'POST':
-        stamp = request.form.get('stamp')
-        stamps.append(stamp)
-        return redirect(url_for('view_stamps'))
-    return render_template('add_stamp.html')
+    if request.method == "GET":
+        return render_template("add_stamp.html")
+    else:
+        country = request.form["country"]
+        year = request.form["year"]
+        theme = request.form["theme"]
+        new_stamp = {
+            "id": len(stamps) + 1,
+            "country": country,
+            "year": year,
+            "theme": theme
+        }
+        stamps.append(new_stamp)
+        return redirect(url_for("index"))
 
-# Edit an existing stamp in the collection
-@app.route('/edit_stamp/<int:stamp_id>', methods=['GET', 'POST'])
+@app.route("/edit_stamp/<int:stamp_id>", methods=["GET", "POST"])
 def edit_stamp(stamp_id):
-    if request.method == 'POST':
-        stamp = request.form.get('stamp')
-        stamps[stamp_id] = stamp
-        return redirect(url_for('view_stamps'))
-    return render_template('edit_stamp.html', stamp_id=stamp_id, stamp=stamps[stamp_id])
+    stamp = stamps[stamp_id - 1]
+    if request.method == "GET":
+        return render_template("edit_stamp.html", stamp=stamp)
+    else:
+        country = request.form["country"]
+        year = request.form["year"]
+        theme = request.form["theme"]
+        stamp["country"] = country
+        stamp["year"] = year
+        stamp["theme"] = theme
+        return redirect(url_for("index"))
 
-# Delete a stamp from the collection
-@app.route('/delete_stamp/<int:stamp_id>')
+@app.route("/delete_stamp/<int:stamp_id>")
 def delete_stamp(stamp_id):
-    del stamps[stamp_id]
-    return redirect(url_for('view_stamps'))
+    stamp = stamps[stamp_id - 1]
+    stamps.remove(stamp)
+    return redirect(url_for("index"))
 
-# View all of the stamps in the collection
-@app.route('/view_stamps')
-def view_stamps():
-    return render_template('view_stamps.html', stamps=stamps)
+@app.route("/view_stamp/<int:stamp_id>")
+def view_stamp(stamp_id):
+    stamp = stamps[stamp_id - 1]
+    return render_template("view_stamp.html", stamp=stamp)
 
-# Search for stamps in the collection
-@app.route('/search_stamps', methods=['GET', 'POST'])
+@app.route("/search_stamps", methods=["GET", "POST"])
 def search_stamps():
-    if request.method == 'POST':
-        search_term = request.form.get('search_term')
-        results = [stamp for stamp in stamps if search_term in stamp]
-        return render_template('search_stamps.html', results=results)
-    return render_template('search_stamps.html')
+    if request.method == "GET":
+        return render_template("search_stamps.html")
+    else:
+        country = request.form["country"]
+        year = request.form["year"]
+        theme = request.form["theme"]
+        results = []
+        for stamp in stamps:
+            if (country and stamp["country"] == country) or \
+               (year and stamp["year"] == year) or \
+               (theme and stamp["theme"] == theme):
+                results.append(stamp)
+        return render_template("search_stamps.html", results=results)
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run()
-
-
-HTML code for index.html
-
-html
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Stamp Collection</title>
-</head>
-<body>
-  <h1>Stamp Collection</h1>
-  <a href="/add_stamp">Add a new stamp</a>
-  <a href="/view_stamps">View all stamps</a>
-  <a href="/search_stamps">Search for stamps</a>
-</body>
-</html>
-
-
-HTML code for add_stamp.html
-
-html
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Add a new stamp</title>
-</head>
-<body>
-  <h1>Add a new stamp</h1>
-  <form action="/add_stamp" method="post">
-    <label for="stamp">Stamp:</label><br>
-    <input type="text" id="stamp" name="stamp"><br><br>
-    <input type="submit" value="Submit">
-  </form>
-</body>
-</html>
-
-
-HTML code for edit_stamp.html
-
-html
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Edit a stamp</title>
-</head>
-<body>
-  <h1>Edit a stamp</h1>
-  <form action="/edit_stamp/{{ stamp_id }}" method="post">
-    <label for="stamp">Stamp:</label><br>
-    <input type="text" id="stamp" name="stamp" value="{{ stamp }}"><br><br>
-    <input type="submit" value="Submit">
-  </form>
-</body>
-</html>
-
-
-HTML code for view_stamps.html
-
-html
-<!DOCTYPE html>
-<html>
-<head>
-  <title>View all stamps</title>
-</head>
-<body>
-  <h1>View all stamps</h1>
-  <ul>
-    {% for stamp in stamps %}
-      <li>{{ stamp }}</li>
-    {% endfor %}
-  </ul>
-</body>
-</html>
-
-
-HTML code for search_stamps.html
-
-html
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Search for stamps</title>
-</head>
-<body>
-  <h1>Search for stamps</h1>
-  <form action="/search_stamps" method="post">
-    <label for="search_term">Search term:</label><br>
-    <input type="text" id="search_term" name="search_term"><br><br>
-    <input type="submit" value="Submit">
-  </form>
-  {% if results %}
-    <ul>
-      {% for stamp in results %}
-        <li>{{ stamp }}</li>
-      {% endfor %}
-    </ul>
-  {% endif %}
-</body>
-</html>
