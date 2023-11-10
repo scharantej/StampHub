@@ -1,37 +1,19 @@
-edit_stamp.html
-
 
 html
-html
-<!DOCTYPE html>
 <!DOCTYPE html>
 <html>
-<html>
-<head>
 <head>
 <title>Edit a stamp</title>
-<title>Edit a stamp</title>
-</head>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-<body>
-<h1>Edit a stamp</h1>
 <h1>Edit a stamp</h1>
 <form action="/edit_stamp/{{ stamp_id }}" method="post">
-<form action="/edit_stamp/{{ stamp_id }}" method="post">
-<label for="stamp">Stamp:</label>
-<label for="stamp">Stamp:</label>
-<input type="text" name="stamp" id="stamp" value="{{ stamp }}">
-<input type="text" name="stamp" id="stamp" value="{{ stamp }}">
-<input type="submit" value="Edit stamp">
+<label for="stamp">Stamp:</label><br>
+<input type="text" id="stamp" name="stamp" value="{{ stamp }}"><br><br>
 <input type="submit" value="Edit stamp">
 </form>
-</form>
-</body>
 </body>
 </html>
-</html>
-
-
 
 
