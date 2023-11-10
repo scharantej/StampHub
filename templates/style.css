@@ -1,224 +1,35 @@
 
 
-
-
-body {
 body {
 font-family: Arial, Helvetica, sans-serif;
-font-family: Arial, Helvetica, sans-serif;
-line-height: 1.6;
-line-height: 1.6;
+margin: 0;
 }
-}
-
 
 h1 {
-h1 {
-font-size: 2em;
-font-size: 2em;
+font-size: 24px;
+font-weight: bold;
 }
-}
-
 
 ul {
-ul {
 list-style-type: none;
-list-style-type: none;
+margin: 0;
+padding: 0;
 }
-}
-
 
 li {
-li {
-margin-bottom: 1em;
-margin-bottom: 1em;
+display: block;
+margin-bottom: 8px;
 }
-}
-
 
 a {
-a {
-color: blue;
 color: blue;
 text-decoration: none;
-text-decoration: none;
 }
-}
-
 
 a:hover {
-a:hover {
-text-decoration: underline;
-text-decoration: underline;
+color: red;
 }
-}
-
-
 
 
 The generated HTML files look like this:
-The generated HTML files look like this:
 
-
-index.html:
-index.html:
-
-
-html
-html
-<!DOCTYPE html>
-<!DOCTYPE html>
-<html>
-<html>
-<head>
-<head>
-<title>Stamp Collection</title>
-<title>Stamp Collection</title>
-<link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="style.css">
-</head>
-</head>
-<body>
-<body>
-<h1>Stamp Collection</h1>
-<h1>Stamp Collection</h1>
-<a href="/add_stamp">Add a new stamp</a>
-<a href="/add_stamp">Add a new stamp</a>
-<a href="/view_stamps">View all stamps</a>
-<a href="/view_stamps">View all stamps</a>
-<a href="/search_stamps">Search for stamps</a>
-<a href="/search_stamps">Search for stamps</a>
-</body>
-</body>
-</html>
-</html>
-
-
-
-
-add_stamp.html:
-add_stamp.html:
-
-
-html
-html
-<!DOCTYPE html>
-<!DOCTYPE html>
-<html>
-<html>
-<head>
-<head>
-<title>Add a new stamp</title>
-<title>Add a new stamp</title>
-<link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="style.css">
-</head>
-</head>
-<body>
-<body>
-<h1>Add a new stamp</h1>
-<h1>Add a new stamp</h1>
-<form action="/add_stamp" method="post">
-<form action="/add_stamp" method="post">
-<label for="stamp">Stamp:</label>
-<label for="stamp">Stamp:</label>
-<input type="text" name="stamp" id="stamp">
-<input type="text" name="stamp" id="stamp">
-<input type="submit" value="Add stamp">
-<input type="submit" value="Add stamp">
-</form>
-</form>
-</body>
-</body>
-</html>
-</html>
-
-
-
-
-edit_stamp.html:
-edit_stamp.html:
-
-
-html
-html
-<!DOCTYPE html>
-<!DOCTYPE html>
-<html>
-<html>
-<head>
-<head>
-<title>Edit a stamp</title>
-<title>Edit a stamp</title>
-<link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="style.css">
-</head>
-</head>
-<body>
-<body>
-<h1>Edit a stamp</h1>
-<h1>Edit a stamp</h1>
-<form action="/edit_stamp/{{ stamp_id }}" method="post">
-<form action="/edit_stamp/{{ stamp_id }}" method="post">
-<label for="stamp">Stamp:</label>
-<label for="stamp">Stamp:</label>
-<input type="text" name="stamp" id="stamp" value="{{ stamp }}">
-<input type="text" name="stamp" id="stamp" value="{{ stamp }}">
-<input type="submit" value="Edit stamp">
-<input type="submit" value="Edit stamp">
-</form>
-</form>
-</body>
-</body>
-</html>
-</html>
-
-
-
-
-view_stamps.html:
-view_stamps.html:
-
-
-html
-html
-<!DOCTYPE html>
-<!DOCTYPE html>
-<html>
-<html>
-<head>
-<head>
-<title>View all stamps</title>
-<title>View all stamps</title>
-<link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="style.css">
-</head>
-</head>
-<body>
-<body>
-<h1>View all stamps</h1>
-<h1>View all stamps</h1>
-<ul>
-<ul>
-{% for stamp in stamps %}
-{% for stamp in stamps %}
-<li>{{ stamp }}</li>
-<li>{{ stamp }}</li>
-{% endfor %}
-{% endfor %}
-</ul>
-</ul>
-</body>
-</body>
-</html>
-</html>
-
-
-
-
-search_stamps.html:
-search_stamps.html:
-
-
-html
-html
