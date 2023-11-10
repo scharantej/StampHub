@@ -3,10 +3,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Search for stamps</title>
+<title>Search Stamps</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-<h1>Search for stamps</h1>
+<h1>Search Stamps</h1>
 <form action="/search" method="post">
 <input type="text" name="query" placeholder="Search for a stamp">
 <input type="submit" value="Search">
@@ -18,4 +19,35 @@
 </ul>
 </body>
 </html>
+
+
+style.css
+
+css
+body {
+font-family: Arial, sans-serif;
+}
+
+h1 {
+font-size: 24px;
+}
+
+ul {
+list-style-type: none;
+}
+
+li {
+margin-bottom: 8px;
+}
+
+input {
+padding: 8px;
+border: 1px solid #ccc;
+}
+
+input[type="submit"] {
+background-color: #000;
+color: #fff;
+cursor: pointer;
+}
 
