@@ -44,8 +44,8 @@ def view():
 @app.route('/search', methods=['GET', 'POST'])
 def search():
     if request.method == 'POST':
-        query = request.form.get('query')
-        results = [stamp for stamp in stamps if query in stamp]
+        stamp = request.form.get('stamp')
+        results = [stamp for stamp in stamps if stamp.lower().find(stamp.lower()) != -1]
         return render_template('search.html', results=results)
     return render_template('search.html')
 
@@ -139,7 +139,7 @@ html
 <body>
     <h1>Search for stamps</h1>
     <form action="/search" method="post">
-        <input type="text" name="query" placeholder="Search for a stamp">
+        <input type="text" name="stamp" placeholder="Stamp name">
         <input type="submit" value="Search">
     </form>
     <ul>
