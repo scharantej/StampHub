@@ -4,13 +4,14 @@
 <html>
 <head>
 <title>Edit a stamp</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 <h1>Edit a stamp</h1>
 <form action="/edit_stamp/{{ stamp_id }}" method="post">
-<label for="stamp">Stamp:</label>
-<input type="text" name="stamp" id="stamp" value="{{ stamp }}">
-<input type="submit" value="Edit stamp">
+<label for="stamp">Stamp:</label><br>
+<input type="text" id="stamp" name="stamp" value="{{ stamp }}"><br><br>
+<input type="submit" value="Submit">
 </form>
 </body>
 </html>
