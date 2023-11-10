@@ -7,17 +7,12 @@
 </head>
 <body>
 <h1>Stamp Collection</h1>
-<form action="/add_stamp" method="post">
-<input type="text" name="stamp" placeholder="Add a new stamp">
-<input type="submit" value="Add">
-</form>
 <ul>
 {% for stamp in stamps %}
 <li>{{ stamp }}</li>
 {% endfor %}
 </ul>
-<a href="/view_stamps">View all stamps</a>
-<a href="/search_stamps">Search for stamps</a>
+<a href="/add">Add a new stamp</a>
 </body>
 </html>
 
