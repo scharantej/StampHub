@@ -3,20 +3,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Search Stamps</title>
+<title>Search for stamps</title>
 </head>
 <body>
-<h1>Search Stamps</h1>
+<h1>Search for stamps</h1>
 <form action="/search_stamps" method="post">
-<input type="text" name="search_term" placeholder="Search for a stamp">
+<label for="search_term">Search term:</label>
+<input type="text" name="search_term" id="search_term">
 <input type="submit" value="Search">
 </form>
 <ul>
-{% for stamp in stamps %}
-<li>{{ stamp }}</li>
+{% for result in results %}
+<li>{{ result }}</li>
 {% endfor %}
 </ul>
-<a href="/">Home</a>
 </body>
 </html>
 
