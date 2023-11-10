@@ -4,15 +4,13 @@
 <html>
 <head>
 <title>Stamp Collection</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 <h1>Stamp Collection</h1>
-<ul>
-{% for stamp in stamps %}
-<li>{{ stamp }}</li>
-{% endfor %}
-</ul>
-<a href="/add">Add a new stamp</a>
+<a href="/add_stamp">Add a new stamp</a>
+<a href="/view_stamps">View all stamps</a>
+<a href="/search_stamps">Search for stamps</a>
 </body>
 </html>
 
